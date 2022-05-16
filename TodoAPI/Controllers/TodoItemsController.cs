@@ -11,15 +11,19 @@ namespace TodoApi.Controllers
     {
         private readonly TodoContext _context;
 
+
         public TodoItemsController(TodoContext context)
         {
             _context = context;
+            _context.TodoItems.Add(new TodoItem { IsComplete = false, Name = "TESTINIMI", Secret = "secret" });
         }
 
         // GET: api/TodoItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
+
         {
+            await _context.SaveChangesAsync();
             return await _context.TodoItems.Select(todoitem => ItemToDTO(todoitem)).ToListAsync();
         }
 
